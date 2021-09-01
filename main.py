@@ -10,7 +10,7 @@ def detect_labels_local_file(photo):
                           aws_access_key_id=os.getenv('aws_access_key_id'),
                           aws_secret_access_key=os.getenv('aws_secret_access_key'))
 
-    with open('image.jpeg', 'rb') as image:
+    with open('TestCode/resource/image.jpeg', 'rb') as image:
         response = client.detect_faces(Image={'Bytes': image.read()}, Attributes=[
             'ALL'
         ])
