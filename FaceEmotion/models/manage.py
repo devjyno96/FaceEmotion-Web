@@ -1,12 +1,14 @@
 from sqlalchemy import MetaData
 
-from . import control
+from . import rekognition, user
 from ..database import engine, get_db
 
 
 def create_all():
-    file.Base.metadata.create_all(bind=engine)
+    user.Base.metadata.create_all(bind=engine)
+    rekognition.Base.metadata.create_all(bind=engine)
 
 
 def delete_all():
-    file.Base.metadata.drop_all(bind=engine)
+    user.Base.metadata.drop_all(bind=engine)
+    rekognition.Base.metadata.drop_all(bind=engine)
