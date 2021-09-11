@@ -11,8 +11,6 @@ from ..schemas import rekognition as rekognition_schemas
 
 from .routers_function import get_summary_location
 
-from ..main import templates
-
 router = APIRouter(
     prefix='/rekognition',
     tags=['Rekognition']
@@ -29,7 +27,8 @@ def get_html_rekognition(db: Session = Depends(get_db)):
     ### 관련 모델
     - Job, Task
     '''
-    return templates.TemplateResponse("rekognition/index.html")
+    pass
+    # return templates.TemplateResponse("rekognition/index.html")
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())

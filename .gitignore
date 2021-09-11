@@ -3,3 +3,4 @@
 TestCode/resource/image.jpeg
 .env
 /TestCode/resource/*
+/FaceEmotion.db
