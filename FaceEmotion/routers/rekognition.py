@@ -42,6 +42,7 @@ def request_rekognition(byte_image: bytes = File(...), db: Session = Depends(get
     ### 관련 모델
     - user, rekognition_result
     '''
+    print('test')
     return rekognition_repository.request_rekognition(byte_image, db)
 
 
