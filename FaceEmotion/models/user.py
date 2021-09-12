@@ -19,13 +19,12 @@ class User(Base):
     name = Column(String)
     is_admin = Column(Boolean, default=False)
 
-    email = Column(String, unique=True)
-    team = Column(String, nullable=True)
-    title = Column(String, nullable=True)
-    phone = Column(String, nullable=True)
-
     # One To One
     refresh_token = relationship("RefreshToken", uselist=False, back_populates="user")
+
+    # 1 : N
+    rekognition_result = relationship("User", back_populates="user", passive_deletes=True)
+
 
 
 class RefreshToken(Base):

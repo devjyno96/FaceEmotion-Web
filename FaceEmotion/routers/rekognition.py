@@ -1,7 +1,7 @@
 import sys
 from typing import List
 
-from fastapi import APIRouter, Depends, status, Request
+from fastapi import APIRouter, Depends, status, Request, File
 from fastapi.templating import Jinja2Templates
 
 from sqlalchemy.orm import Session
@@ -20,28 +20,29 @@ router = APIRouter(
 get_db = database.get_db
 
 
-templates = Jinja2Templates(directory="FaceEmotion/templates")
+templates = Jinja2Templates(directory="FaceEmotion/templates/rekognition")
 
-@router.get('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
+@router.get('/', status_code=status.HTTP_201_CREATED, summary="get_html_rekognition" + " | " + get_summary_location())
 def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
     '''
     ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
+    - rekognition html 요청
     ### 관련 모델
-    - Job, Task
+    - None
     '''
-    return templates.TemplateResponse("/rekognition/index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
-def request_rekognition(byte_image: bytes, db: Session = Depends(get_db)):
+def request_rekognition(byte_image: bytes = File(...), db: Session = Depends(get_db)):
     '''
     ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
+    - Amazon Rekognition 을 요청하고 그 결과를 받는 api
+    - 분석에 1초 정도 소요됨
     ### 관련 모델
-    - Job, Task
+    - user, rekognition_result
     '''
-    pass
+    return rekognition_repository.request_rekognition(byte_image, db)
 
 
 @router.get('/result', status_code=status.HTTP_201_CREATED, summary="get_rekognition" + " | " + get_summary_location())

@@ -16,7 +16,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('TOKEN_SECRET_KEY')
 ALGORITHM = os.getenv('TOKEN_ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 360
 
 
 # Generate Refresh Token Setting
