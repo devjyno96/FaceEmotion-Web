@@ -10,7 +10,6 @@ class RekognitionResult(Base):
     __tablename__ = 'rekognition_results'
 
     rekognition_result_id = Column(Integer, primary_key=True, index=True)
-
     # 각 수치는 확룰을 의미합니다
     smile = Column(Float)
 

@@ -1,7 +1,5 @@
-from sqlalchemy import MetaData
-
 from . import rekognition, user
-from ..database import engine, get_db
+from ..database import engine
 
 
 def create_all():
