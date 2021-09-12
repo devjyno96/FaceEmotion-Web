@@ -30,7 +30,7 @@ def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
     ### 관련 모델
     - None
     '''
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("rekognition.html", {"request": request})
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
