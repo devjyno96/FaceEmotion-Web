@@ -2,6 +2,7 @@ import sys
 from typing import List
 
 from fastapi import APIRouter, Depends, status, Request
+from fastapi.templating import Jinja2Templates
 
 from sqlalchemy.orm import Session
 
@@ -19,16 +20,17 @@ router = APIRouter(
 get_db = database.get_db
 
 
+templates = Jinja2Templates(directory="FaceEmotion/templates")
+
 @router.get('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
-def get_html_rekognition(db: Session = Depends(get_db)):
+def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
     '''
     ### 설명
     - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
     ### 관련 모델
     - Job, Task
     '''
-    pass
-    # return templates.TemplateResponse("rekognition/index.html")
+    return templates.TemplateResponse("/rekognition/index.html", {"request": request})
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())

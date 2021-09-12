@@ -1,5 +1,3 @@
-git pull
-
 venv_folder="venv"
 
 if [ ! -d "$venv_folder" ]

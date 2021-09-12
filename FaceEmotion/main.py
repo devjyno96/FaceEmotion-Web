@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from fastapi.staticfiles import StaticFiles
+
 from .models import manage
 from .routers import rekognition
 
@@ -9,6 +11,7 @@ app = FastAPI(
     version="0.0.1",
 )
 
+app.mount("/static", StaticFiles(directory="FaceEmotion/static"), name="static")
 
 manage.create_all()
 
