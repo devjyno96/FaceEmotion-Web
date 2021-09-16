@@ -1,7 +1,7 @@
 import sys
 from typing import List
 
-from fastapi import APIRouter, Depends, status, Request, File
+from fastapi import APIRouter, Depends, status, Request, File, Form, Body
 from fastapi.templating import Jinja2Templates
 
 from sqlalchemy.orm import Session
@@ -34,7 +34,7 @@ def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
-def request_rekognition(byte_image: bytes = File(...), db: Session = Depends(get_db)):
+def request_rekognition(files: bytes = Body(...), db: Session = Depends(get_db)):
     '''
     ### 설명
     - Amazon Rekognition 을 요청하고 그 결과를 받는 api
@@ -43,7 +43,7 @@ def request_rekognition(byte_image: bytes = File(...), db: Session = Depends(get
     - user, rekognition_result
     '''
     print('test')
-    return rekognition_repository.request_rekognition(byte_image, db)
+    return rekognition_repository.request_rekognition(files, db)
 
 
 @router.get('/result', status_code=status.HTTP_201_CREATED, summary="get_rekognition" + " | " + get_summary_location())

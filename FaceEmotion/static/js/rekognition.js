@@ -6,14 +6,15 @@ var video = document.getElementById('video');
 
 function CallRekognition(imageString){
 var data = new FormData()
-data.append('byte_image', imageString)
+data.append('files', imageString)
 console.log(imageString)
     let result = fetch('/rekognition/', {
 	method : 'post',
 	headers: {
             'Content-Type': 'multipart/form-data',
+            'accept': 'application/json',
         },
-    body: data,
+    body: JSON.stringify(data),
 	})
 	console.log(result)
 //    result.then(function(response) {
@@ -36,10 +37,17 @@ document.getElementById("snap").addEventListener("click", function() {
     canvas.getContext('2d')
       .drawImage(video, 0, 0, canvas.width, canvas.height);
     // convert it to a usable data URL
+    canvas.toBlob(function(blob) {
+    fetch('/rekognition/', {
+      method: 'POST',
+      body:blob
+    })
+      .then(response => response.json())
+      },'image/png');
     const dataURL = canvas.toDataURL("image/jpeg");
 //    console.log(dataURL)
     // Test
-    CallRekognition(dataURL)
+//    CallRekognition(dataURL)
 });
     // Grab elements, create settings, etc.
 var video = document.getElementById('video');
