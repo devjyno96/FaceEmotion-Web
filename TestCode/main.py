@@ -19,7 +19,8 @@ def init_dummy_data():
 
     print('============Unit Test Start============')
     testSuite = unittest.TestSuite()
-    module_strings = ['rekognition',
+    module_strings = ['user',
+                      'rekognition',
                       ]
     [__import__(model_str) for model_str in module_strings]
     suites = [unittest.TestLoader().loadTestsFromName(model_str) for model_str in module_strings]

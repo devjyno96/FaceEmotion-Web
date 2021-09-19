@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-from fastapi import Depends
 from fastapi_jwt_auth import AuthJWT
 
 from jose import JWTError, jwt
@@ -34,6 +33,7 @@ def get_config():
 
 # Generate Refresh Token Setting
 def create_access_token(data: dict):
+    load_dotenv()
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
