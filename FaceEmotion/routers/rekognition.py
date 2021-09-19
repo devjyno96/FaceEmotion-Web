@@ -19,11 +19,11 @@ router = APIRouter(
 
 get_db = database.get_db
 
-
 templates = Jinja2Templates(directory="FaceEmotion/templates/rekognition")
 
-@router.get('/', status_code=status.HTTP_201_CREATED, summary="get_html_rekognition" + " | " + get_summary_location())
-def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
+
+@router.get('/', status_code=status.HTTP_200_OK, summary="get_html_rekognition" + " | " + get_summary_location())
+def get_html_rekognition(request: Request, db: Session = Depends(get_db)):
     '''
     ### 설명
     - rekognition html 요청
@@ -45,48 +45,27 @@ def request_rekognition(file: bytes = File(...), db: Session = Depends(get_db)):
     return rekognition_repository.request_rekognition(file, db)
 
 
-@router.get('/result', status_code=status.HTTP_201_CREATED, summary="get_rekognition" + " | " + get_summary_location())
-def get_rekognition(db: Session = Depends(get_db)):
+@router.get('/result/all', status_code=status.HTTP_200_OK,
+            response_model=List[rekognition_schemas.ShowRekognitionResult],
+            summary="get_all_rekognition_result_list" + " | " + get_summary_location())
+def get_all_rekognition_result_list(user_id: int, db: Session = Depends(get_db)):
     '''
     ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
+    - 해당 유저의 rekognition 결과들을 전부 요청하는 API
     ### 관련 모델
-    - Job, Task
+    - User, Rekognition
     '''
-    pass
+    return rekognition_repository.get_all_rekognition_result_list(user_id, db)
 
 
-@router.get('/result/all', status_code=status.HTTP_201_CREATED,
-            summary="get_all_rekognitions" + " | " + get_summary_location())
-def get_all_rekognitions(db: Session = Depends(get_db)):
-    '''
-    ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
-    ### 관련 모델
-    - Job, Task
-    '''
-    pass
-
-
-@router.get('/result/duration', status_code=status.HTTP_201_CREATED,
+@router.get('/result/duration', status_code=status.HTTP_200_OK,
+            response_model=List[rekognition_schemas.ShowRekognitionResult],
             summary="get_rekognition_by_duration" + " | " + get_summary_location())
-def get_rekognition_by_duration(db: Session = Depends(get_db)):
+def get_rekognition_result_list_by_duration(user_id: int, db: Session = Depends(get_db)):
     '''
     ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
+    - 해당 유저의 rekognition 결과 중 일정 시간 전(ex 5초) 까지의 결과를 반환하는 API
     ### 관련 모델
-    - Job, Task
+    - User, Rekognition
     '''
-    pass
-
-
-@router.delete('/result', status_code=status.HTTP_201_CREATED,
-               summary="delete_rekognition" + " | " + get_summary_location())
-def delete_rekognition(db: Session = Depends(get_db)):
-    '''
-    ### 설명
-    - s3에서 pcap file list를 받아와 job과 task를 생성하는 API
-    ### 관련 모델
-    - Job, Task
-    '''
-    pass
+    return rekognition_repository.get_rekognition_result_list_by_duration(user_id, db)

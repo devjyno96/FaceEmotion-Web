@@ -27,11 +27,24 @@ class Order_01_Rekognition(unittest.TestCase):
         response = requests.post(self.host + '/rekognition', files=files)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, msg="Rekognition HTML Load Error")
 
-    def test_03_get_rekognition_result_all(self):
-        pass
+    def test_03_request_rekognition_multi(self):
+        for i in range(5):
+            image = open(self.file_folder + 'image/test_image.jpeg', 'rb')
+            image_read = image.read()
+            files = {'file': image_read}
 
-    def test_04_get_rekognition_result_list_in_duration(self):
-        pass
+            response = requests.post(self.host + '/rekognition', files=files)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED, msg="Rekognition HTML Load Error")
+
+    def test_04_get_rekognition_result_all_by_user_id(self):
+        user_id = 1
+        response = requests.get(self.host + '/rekognition/result/all', params={'user_id': user_id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK, msg="Rekognition Result Get All Error")
+
+    def test_05_get_rekognition_result_list_in_duration(self):
+        user_id = 1
+        response = requests.get(self.host + '/rekognition/result/duration', params={'user_id': user_id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK, msg="Rekognition Result Get All Error")
 
 
 if __name__ == "__main__":

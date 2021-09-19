@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from .. import amazon as amazon
 from ..models import rekognition as rekognition_models
+from ..models import user as user_models
 from ..schemas import rekognition as rekognition_schemas
 
 
@@ -48,3 +49,26 @@ def request_rekognition(byte_image: bytes, db: Session):
 
     db.refresh(new_rekognition_result)
     return new_rekognition_result
+
+
+def get_all_rekognition_result_list(user_id: int, db: Session):
+    user = db.query(user_models.User).filter(user_models.User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'author with id {user_id} not found')
+    rekognition_result_list = db.query(rekognition_models.RekognitionResult).filter(
+        rekognition_models.RekognitionResult.user == user
+    ).all()
+    return rekognition_result_list
+
+
+def get_rekognition_result_list_by_duration(user_id: int, db: Session):
+    user = db.query(user_models.User).filter(user_models.User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'author with id {user_id} not found')
+    rekognition_result_list = db.query(rekognition_models.RekognitionResult).filter(
+        rekognition_models.RekognitionResult.user == user,
+        rekognition_models.RekognitionResult.created_time > (datetime.datetime.now() - datetime.timedelta(seconds=3)),
+    ).all()
+    return rekognition_result_list
