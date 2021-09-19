@@ -10,7 +10,8 @@ from ..schemas import rekognition as rekognition_schemas
 
 def request_rekognition(byte_image: bytes, db: Session):
     response = amazon.run_rekognition_by_byte_image(byte_image)
-    print(response['FaceDetails'][0]['Smile'])
-    print(response['FaceDetails'][0]['Emotions'])
+    print(response)
+    # print(response['FaceDetails'][0]['Smile'])
+    # print(response['FaceDetails'][0]['Emotions'])
 
     return response
