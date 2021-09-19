@@ -34,7 +34,7 @@ def get_html_rekognition(request: Request,db: Session = Depends(get_db)):
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, summary="request_rekognition" + " | " + get_summary_location())
-def request_rekognition(files: bytes = Body(...), db: Session = Depends(get_db)):
+def request_rekognition(file: bytes = File(...), db: Session = Depends(get_db)):
     '''
     ### 설명
     - Amazon Rekognition 을 요청하고 그 결과를 받는 api
@@ -42,8 +42,7 @@ def request_rekognition(files: bytes = Body(...), db: Session = Depends(get_db))
     ### 관련 모델
     - user, rekognition_result
     '''
-    print('test')
-    return rekognition_repository.request_rekognition(files, db)
+    return rekognition_repository.request_rekognition(file, db)
 
 
 @router.get('/result', status_code=status.HTTP_201_CREATED, summary="get_rekognition" + " | " + get_summary_location())
