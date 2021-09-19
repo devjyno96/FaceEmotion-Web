@@ -17,7 +17,7 @@ class RekognitionResult(Base):
     confused = Column(Float, nullable=True)
     disgusted = Column(Float, nullable=True)
     surprised = Column(Float, nullable=True)
-    clam = Column(Float, nullable=True)
+    calm = Column(Float, nullable=True)
     angry = Column(Float, nullable=True)
     sad = Column(Float, nullable=True)
     fear = Column(Float, nullable=True)

@@ -18,7 +18,7 @@ class User(Base):
     refresh_token = relationship("RefreshToken", uselist=False, back_populates="user")
 
     # 1 : N
-    rekognition_result = relationship("User", back_populates="user", passive_deletes=True)
+    rekognition_result = relationship("RekognitionResult", back_populates="user", passive_deletes=True)
 
 
 
