@@ -25,6 +25,10 @@ class Order_01_Rekognition(unittest.TestCase):
         files = {'file': image_read}
 
         response = requests.post(self.host + '/rekognition', files=files)
+
+        with open("resource/request_result.json", "w") as json_file:
+            json.dump(json.loads(response.text), json_file)
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, msg="Rekognition HTML Load Error")
 
     def test_03_request_rekognition_multi(self):
@@ -39,11 +43,19 @@ class Order_01_Rekognition(unittest.TestCase):
     def test_04_get_rekognition_result_all_by_user_id(self):
         user_id = 1
         response = requests.get(self.host + '/rekognition/result/all', params={'user_id': user_id})
+
+        with open("resource/request_result_all.json", "w") as json_file:
+            json.dump(json.loads(response.text), json_file)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK, msg="Rekognition Result Get All Error")
 
     def test_05_get_rekognition_result_list_in_duration(self):
         user_id = 1
         response = requests.get(self.host + '/rekognition/result/duration', params={'user_id': user_id})
+
+        with open("resource/request_result_all_duration.json", "w") as json_file:
+            json.dump(json.loads(response.text), json_file)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK, msg="Rekognition Result Get All Error")
 
 
