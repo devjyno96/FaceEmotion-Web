@@ -6,17 +6,20 @@
 
 </head>
 <body>
+<canvas id="canvas" width="640" height="480" style="display:None;"></canvas>
 <!--
 	Ideally these elements aren't created until it's confirmed that the
 	client supports video/camera, but for the sake of illustrating the
 	elements involved, they are created with markup (not JavaScript)
 -->
+<br>
+<button id="rekognition_start">Start</button>
+<button id="rekognition_stop">Stop</button>
+<button id="rekognition_result">Result</button>
+<br>
+<br>
 <video id="video" width="640" height="480" autoplay></video>
-<button id="snap">Snap Photo</button>
-<canvas id="canvas" width="640" height="480"></canvas>
 
-<script src="{{ url_for('static', path='/js/rekognition.js') }}">
-
-</script>
+<script src="{{ url_for('static', path='/js/rekognition.js') }}"></script>
 </body>
 </html>

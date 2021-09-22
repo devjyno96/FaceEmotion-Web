@@ -5,7 +5,8 @@ var context = canvas.getContext('2d');
 var video = document.getElementById('video');
 
 // Trigger photo take
-document.getElementById("snap").addEventListener("click", function() {
+
+function RequestRekognition(){
 	context.drawImage(video, 0, 0, 640, 480);
     const canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
@@ -22,7 +23,41 @@ document.getElementById("snap").addEventListener("click", function() {
     })
       .then(response => response.json())
       },'image/png');
-});
+}
+
+// 주기적 실행
+// 중지를 위해 ID 보관
+var request_rekognition_id = null;
+
+// 시계 시작
+function StartRekognitionInterval() {
+    request_rekognition_id = setInterval(RequestRekognition, 500);
+}
+// 시계 중지
+function StopRekognitionInterval() {
+    clearInterval(request_rekognition_id);
+
+}
+
+
+// 분석 결과 요청 interval 생성
+function RequestRekognitionResult(){
+    let params = { "user_id": 1};
+    let query = Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&');
+    let url = '/rekognition/result/duration?' + query;
+    fetch(url, {
+      method: 'GET',
+    }).then(response =>console.log("response:", response.json()));
+
+
+}
+//setInterval(RequestRekognitionResult, 500);
+
+document.getElementById("rekognition_start").addEventListener("click", StartRekognitionInterval);
+document.getElementById("rekognition_stop").addEventListener("click", StopRekognitionInterval);
+document.getElementById("rekognition_result").addEventListener("click", RequestRekognitionResult);
+
+
 
 // Get access to the camera!
 if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
