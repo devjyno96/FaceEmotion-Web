@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"
+            integrity="sha512-b3xr4frvDIeyC3gqR1/iOi6T+m3pLlQyXNuvn5FiRrrKiMUJK3du2QqZbCywH6JxS5EOfW0DY0M6WwdXFbCBLQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
 </head>
 <body>
 <canvas id="canvas" width="640" height="480" style="display:None;"></canvas>
@@ -19,6 +24,11 @@
 <br>
 <br>
 <video id="video" width="640" height="480" autoplay></video>
+<br>
+<br>
+<div>
+  <canvas id="myChart" width="640" height="480"></canvas>
+</div>
 
 <script src="{{ url_for('static', path='/js/rekognition.js') }}"></script>
 </body>

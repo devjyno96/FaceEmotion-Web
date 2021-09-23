@@ -47,8 +47,37 @@ function RequestRekognitionResult(){
     let url = '/rekognition/result/duration?' + query;
     fetch(url, {
       method: 'GET',
-    }).then(response =>console.log("response:", response.json()));
+    }).then((res) => {
+        return res.json(); //Promise 반환
+    })
+    .then((json) => {
+        myChart.destroy();
+        var ctx = document.getElementById('myChart');
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: json['labels'],
+                datasets: [{
+                    label: '감정 수치',
+                    data: [85.1, 19, 3],
+                    backgroundColor: json['backgroundColor'],
+                    borderColor:  json['borderColor'],
+                    borderWidth: 3,
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    y: {
+                        max: 100,
+                        beginAtZero: true,
+                        maintainAspectRatio: false,
+                    }
+                }
+            }
+        });
 
+    });
 
 }
 //setInterval(RequestRekognitionResult, 500);
@@ -67,3 +96,38 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         video.play();
     });
 }
+
+
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Smile', 'Anger', 'Surprised'],
+        datasets: [{
+            label: '감정 수치',
+            data: [85.1, 19, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 3,
+        }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            y: {
+                max: 100,
+                beginAtZero: true,
+                maintainAspectRatio: false,
+            }
+        }
+    }
+});
+console.log(myChart)

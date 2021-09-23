@@ -58,7 +58,6 @@ def get_all_rekognition_result_list(user_id: int, db: Session = Depends(get_db))
 
 
 @router.get('/result/duration', status_code=status.HTTP_200_OK,
-            response_model=List[rekognition_schemas.ShowRekognitionResult],
             summary="get_rekognition_by_duration" + " | " + get_summary_location())
 def get_rekognition_result_list_by_duration(user_id: int, duration_second: Optional[int] = None,
                                             db: Session = Depends(get_db)):

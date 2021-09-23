@@ -79,6 +79,27 @@ def get_all_rekognition_result_list(user_id: int, db: Session):
 
 
 def get_rekognition_result_list_by_duration(user_id: int, duration_second: int, db: Session):
+    BackgroundColor = {
+        'happy': 'rgba(255, 99, 132, 0.2)',
+        'confused': 'rgba(255, 159, 64, 0.2)',
+        'disgusted': 'rgba(255, 205, 86, 0.2)',
+        'surprised': 'rgba(75, 192, 192, 0.2)',
+        'calm': 'rgba(54, 162, 235, 0.2)',
+        'angry': 'rgba(153, 102, 255, 0.2)',
+        'sad': 'rgba(201, 203, 207, 0.2)',
+        'fear': 'rgba(59, 59, 59, 0.2)',
+    }
+    BorderColor = {
+        'happy': 'rgb(255, 99, 132)',
+        'confused': 'rgb(255, 159, 64)',
+        'disgusted': 'rgb(255, 205, 86)',
+        'surprised': 'rgb(75, 192, 192)',
+        'calm': 'rgb(54, 162, 235)',
+        'angry': 'rgb(153, 102, 255)',
+        'sad': 'rgb(201, 203, 207)',
+        'fear': 'rgb(59, 59, 59)',
+
+    }
     if not TEST:
         if duration_second is None:
             duration_second = 2
@@ -93,6 +114,28 @@ def get_rekognition_result_list_by_duration(user_id: int, duration_second: int, 
         ).all()
         return rekognition_result_list
     else:
+        result = {}
         with open(TEST_REQUEST_RESULT_PATH + '/request_result_all_duration.json') as json_file:
             json_data = json.load(json_file)
-        return json_data
+        result_dict = {
+            'happy': 0,
+            'confused': 0,
+            'disgusted': 0,
+            'surprised': 0,
+            'calm': 0,
+            'angry': 0,
+            'sad': 0,
+            'fear': 0,
+        }
+        select_key_list = ['happy', 'confused', 'disgusted', 'surprised', 'calm', 'angry', 'sad', 'fear', ]
+        for item in json_data:
+            for selected_key in select_key_list:
+                result_dict[selected_key] += item[selected_key]
+        sorted_result_dict = sorted(result_dict.items(), key=(lambda x: x[1]), reverse=True)[:3]
+        # print(type(sorted_result_dict))
+        result['labels'] = [x[0] for x in sorted_result_dict]
+        result['data'] = [x[1]/len(json_data) for x in sorted_result_dict]
+        result['backgroundColor'] = [BackgroundColor[x[0]] for x in sorted_result_dict]
+        result['borderColor'] = [BorderColor[x[0]] for x in sorted_result_dict]
+
+        return result
