@@ -10,7 +10,7 @@ from .. import amazon as amazon
 from ..models import rekognition as rekognition_models
 from ..models import user as user_models
 
-TEST = True
+TEST = False
 
 TEST_REQUEST_RESULT_PATH = str(Path(os.path.realpath(__file__)).parent.parent.parent.absolute()) + '/TestCode/resource'
 
@@ -100,6 +100,27 @@ def get_rekognition_result_list_by_duration(user_id: int, duration_second: int, 
         'fear': 'rgb(59, 59, 59)',
 
     }
+    result_dict = {
+        'happy': 0,
+        'confused': 0,
+        'disgusted': 0,
+        'surprised': 0,
+        'calm': 0,
+        'angry': 0,
+        'sad': 0,
+        'fear': 0,
+    }
+    select_key_list = ['happy', 'confused', 'disgusted', 'surprised', 'calm', 'angry', 'sad', 'fear', ]
+    select_key_list_translate = {
+        'happy': '행복함',
+        'confused': '혼란스러움',
+        'disgusted': '역겨움',
+        'surprised': '놀람',
+        'calm': '평온함',
+        'angry': '화남',
+        'sad': '슬픔',
+        'fear': '공포',
+    }
     if not TEST:
         if duration_second is None:
             duration_second = 2
@@ -112,29 +133,32 @@ def get_rekognition_result_list_by_duration(user_id: int, duration_second: int, 
             rekognition_models.RekognitionResult.created_time > (
                     datetime.datetime.now() - datetime.timedelta(seconds=duration_second)),
         ).all()
-        return rekognition_result_list
+
+        result = {}
+        for item in rekognition_result_list:
+            for selected_key in select_key_list:
+                result_dict[selected_key] += item.__dict__[selected_key]
+        if len(rekognition_result_list) == 0:
+            return result
+        sorted_result_dict = sorted(result_dict.items(), key=(lambda x: x[1]), reverse=True)[:3]
+        result['labels'] = [select_key_list_translate[x[0]] for x in sorted_result_dict]
+        result['data'] = [x[1] / len(rekognition_result_list) for x in sorted_result_dict]
+        result['backgroundColor'] = [BackgroundColor[x[0]] for x in sorted_result_dict]
+        result['borderColor'] = [BorderColor[x[0]] for x in sorted_result_dict]
+        return result
     else:
         result = {}
         with open(TEST_REQUEST_RESULT_PATH + '/request_result_all_duration.json') as json_file:
             json_data = json.load(json_file)
-        result_dict = {
-            'happy': 0,
-            'confused': 0,
-            'disgusted': 0,
-            'surprised': 0,
-            'calm': 0,
-            'angry': 0,
-            'sad': 0,
-            'fear': 0,
-        }
-        select_key_list = ['happy', 'confused', 'disgusted', 'surprised', 'calm', 'angry', 'sad', 'fear', ]
         for item in json_data:
             for selected_key in select_key_list:
                 result_dict[selected_key] += item[selected_key]
+
+        if len(json_data) == 0:
+            return result
         sorted_result_dict = sorted(result_dict.items(), key=(lambda x: x[1]), reverse=True)[:3]
-        # print(type(sorted_result_dict))
-        result['labels'] = [x[0] for x in sorted_result_dict]
-        result['data'] = [x[1]/len(json_data) for x in sorted_result_dict]
+        result['labels'] = [select_key_list_translate[x[0]] for x in sorted_result_dict]
+        result['data'] = [x[1] / len(json_data) for x in sorted_result_dict]
         result['backgroundColor'] = [BackgroundColor[x[0]] for x in sorted_result_dict]
         result['borderColor'] = [BorderColor[x[0]] for x in sorted_result_dict]
 

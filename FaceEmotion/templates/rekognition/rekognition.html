@@ -8,28 +8,41 @@
             integrity="sha512-b3xr4frvDIeyC3gqR1/iOi6T+m3pLlQyXNuvn5FiRrrKiMUJK3du2QqZbCywH6JxS5EOfW0DY0M6WwdXFbCBLQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <canvas id="canvas" width="640" height="480" style="display:None;"></canvas>
-<!--
-	Ideally these elements aren't created until it's confirmed that the
-	client supports video/camera, but for the sake of illustrating the
-	elements involved, they are created with markup (not JavaScript)
--->
-<br>
-<button id="rekognition_start">Start</button>
-<button id="rekognition_stop">Stop</button>
-<button id="rekognition_result">Result</button>
-<br>
-<br>
-<video id="video" width="640" height="480" autoplay></video>
-<br>
-<br>
-<div>
-  <canvas id="myChart" width="640" height="480"></canvas>
-</div>
+<div class="container">
 
+    <section class="hero" style="background:#ffa500">
+        <div class="hero-body">
+            <p class="title">
+                쫀득이_감정_분석
+            </p>
+            <p class="subtitle">
+                표정으로 어떤 감정인지 분석합니다
+            </p>
+        </div>
+    </section>
+    <br>
+    <br>
+    <div class="columns is-vcentered is-centered">
+        <div class="column is-4">
+            <video id="video" width="500" height="400" autoplay></video>
+        </div>
+        <div class="column is-2 is-centered" style="text-align: center;">
+            <button id="rekognition_start" style="height:150px" class="button is-success is-large is-fullwidth">Start
+            </button>
+            <br>
+            <button id="rekognition_stop" style="height:150px" class="button is-danger is-large is-fullwidth">Stop
+            </button>
+        </div>
+        <div class="column is-4">
+            <canvas id="myChart" width="500" height="400"></canvas>
+        </div>
+    </div>
+</div>
 <script src="{{ url_for('static', path='/js/rekognition.js') }}"></script>
 </body>
 </html>

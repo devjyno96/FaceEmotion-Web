@@ -32,11 +32,12 @@ var request_rekognition_id = null;
 // 시계 시작
 function StartRekognitionInterval() {
     request_rekognition_id = setInterval(RequestRekognition, 500);
+    request_get_rekognition_id = setInterval(RequestRekognitionResult, 500);
 }
 // 시계 중지
 function StopRekognitionInterval() {
     clearInterval(request_rekognition_id);
-
+    clearInterval(request_get_rekognition_id);
 }
 
 
@@ -67,6 +68,7 @@ function RequestRekognitionResult(){
             },
             options: {
                 responsive: false,
+                animation: false,
                 scales: {
                     y: {
                         max: 100,
@@ -84,7 +86,6 @@ function RequestRekognitionResult(){
 
 document.getElementById("rekognition_start").addEventListener("click", StartRekognitionInterval);
 document.getElementById("rekognition_stop").addEventListener("click", StopRekognitionInterval);
-document.getElementById("rekognition_result").addEventListener("click", RequestRekognitionResult);
 
 
 
@@ -130,4 +131,3 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-console.log(myChart)
