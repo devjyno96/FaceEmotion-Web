@@ -31,6 +31,7 @@ var request_rekognition_id = null;
 
 // 시계 시작
 function StartRekognitionInterval() {
+    alert("분석을 시작합니다")
     request_rekognition_id = setInterval(RequestRekognition, 500);
     request_get_rekognition_id = setInterval(RequestRekognitionResult, 500);
 }
@@ -38,6 +39,8 @@ function StartRekognitionInterval() {
 function StopRekognitionInterval() {
     clearInterval(request_rekognition_id);
     clearInterval(request_get_rekognition_id);
+    alert("분석을 중지합니다")
+
 }
 
 
@@ -60,7 +63,7 @@ function RequestRekognitionResult(){
                 labels: json['labels'],
                 datasets: [{
                     label: '감정 수치',
-                    data: [85.1, 19, 3],
+                    data: json['data'],
                     backgroundColor: json['backgroundColor'],
                     borderColor:  json['borderColor'],
                     borderWidth: 3,
