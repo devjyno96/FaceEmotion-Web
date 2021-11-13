@@ -1,15 +1,17 @@
 import unittest
 
-from ..models import manage
 import os
 from pathlib import Path
+
 
 def sys_path_init():
     path = Path(os.path.realpath(__file__)).parent.parent.parent.absolute()
     import sys
     sys.path.append(str(path))
 
+
 def db_init():
+    from FaceEmotion.models import manage
     print('============Data Base Init Start============')
     manage.delete_all()
     manage.create_all()
