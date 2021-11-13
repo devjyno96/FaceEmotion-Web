@@ -1,10 +1,13 @@
 import unittest
 
-from FaceEmotion.models import manage
-
+from ..models import manage
 import os
 from pathlib import Path
 
+def sys_path_init():
+    path = Path(os.path.realpath(__file__)).parent.parent.parent.absolute()
+    import sys
+    sys.path.append(str(path))
 
 def db_init():
     print('============Data Base Init Start============')
@@ -15,6 +18,8 @@ def db_init():
 
 
 def init_dummy_data():
+    sys_path_init()
+
     db_init()
 
     print('============Unit Test Start============')

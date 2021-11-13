@@ -1,6 +1,6 @@
 /venv/
 /.idea
-TestCode/resource/image.jpeg
+FaceEmotion/tests/resource/image.jpeg
 .env
-/TestCode/resource/*
+/FaceEmotion/tests/resource/*
 /FaceEmotion.db
